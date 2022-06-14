@@ -4,7 +4,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:table_calendar/src/widgets/cell_content.dart';
-import 'package:table_calendar/calendar.dart';
+import 'package:table_calendar/calendar123.dart';
 
 Widget setupTestWidget(
   DateTime cellDay, {
