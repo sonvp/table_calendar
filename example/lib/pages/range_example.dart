@@ -17,8 +17,8 @@ class _TableRangeExampleState extends State<TableRangeExample> {
       .toggledOn; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
+  DateTime? _rangeStart = DateTime.now().add(Duration(days: 1));
+  DateTime? _rangeEnd= DateTime.now().add(Duration(days: 2));
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +27,7 @@ class _TableRangeExampleState extends State<TableRangeExample> {
         title: Text('TableCalendar - Range'),
       ),
       body: TableCalendar(
+        isRangeStartEnd: true,
         firstDay: kFirstDay,
         lastDay: kLastDay,
         focusedDay: _focusedDay,

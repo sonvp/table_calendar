@@ -35,6 +35,8 @@ class TableCalendar<T> extends StatefulWidget {
   /// If nothing is provided, a default locale will be used.
   final dynamic locale;
 
+  final bool isRangeStartEnd;
+
   /// The start of the selected day range.
   final DateTime? rangeStartDay;
 
@@ -209,6 +211,7 @@ class TableCalendar<T> extends StatefulWidget {
     required DateTime lastDay,
     DateTime? currentDay,
     this.locale,
+    this.isRangeStartEnd = false,
     this.rangeStartDay,
     this.rangeEndDay,
     this.weekendDays = const [DateTime.saturday, DateTime.sunday],
@@ -354,9 +357,15 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
     if (_isRangeSelectionOn && widget.onRangeSelected != null) {
       if (_firstSelectedDay == null) {
         _firstSelectedDay = day;
+        if(widget.isRangeStartEnd) {
+          widget.onRangeSelected!(_firstSelectedDay, _firstSelectedDay!.add(Duration(days: 1)), _focusedDay.value);
+          return;
+        }
         widget.onRangeSelected!(_firstSelectedDay, null, _focusedDay.value);
       } else {
-        if (day.isAfter(_firstSelectedDay!)) {
+        if(widget.isRangeStartEnd) {
+          widget.onRangeSelected!(day, day.add(Duration(days: 1)), _focusedDay.value);
+        } else if (day.isAfter(_firstSelectedDay!)) {
           widget.onRangeSelected!(_firstSelectedDay, day, _focusedDay.value);
           _firstSelectedDay = null;
         } else if (day.isBefore(_firstSelectedDay!)) {
