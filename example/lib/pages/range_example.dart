@@ -33,9 +33,9 @@ class _TableRangeExampleState extends State<TableRangeExample> {
       body: TableCalendar(
         daysDisabled: (day, isDayTapped) {
           List<DateTime> _daysDisabled = [DateTime(2022, 9, 20),DateTime(2022, 9, 21), DateTime(2022, 9, 23)];
+          DateTime _nextDay = _focusedDay.add(Duration(days: 1));
           for(var value in _daysDisabled) {
-              DateTime _nextDay = _focusedDay.add(Duration(days: 1));
-              if(_areSameDay(value, day) && (isDayTapped || !_areSameDay(_nextDay, value))) {
+              if(_areSameDay(value, day) && (isDayTapped || !_areSameDay(value, _nextDay))) {
                 return true;
               }
           }
