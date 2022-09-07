@@ -167,6 +167,8 @@ class TableCalendar<T> extends StatefulWidget {
   /// If `false` is returned, this day will be disabled.
   final bool Function(DateTime day)? enabledDayPredicate;
 
+  final bool Function(DateTime day, bool isDayTapped)? daysDisabled;
+
   /// Function deciding whether given day should be marked as selected.
   final bool Function(DateTime day)? selectedDayPredicate;
 
@@ -247,6 +249,7 @@ class TableCalendar<T> extends StatefulWidget {
     this.rangeSelectionMode = RangeSelectionMode.toggledOff,
     this.eventLoader,
     this.enabledDayPredicate,
+    this.daysDisabled,
     this.selectedDayPredicate,
     this.holidayPredicate,
     this.onRangeSelected,
@@ -347,6 +350,12 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
     if (isOutside && _shouldBlockOutsideDays) {
       return;
     }
+
+
+    if (_isDaysDisable(day, true)) {
+      return;
+    }
+
 
     if (_isDayDisabled(day)) {
       return widget.onDisabledDayTapped?.call(day);
@@ -705,7 +714,14 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
   bool _isDayDisabled(DateTime day) {
     return day.isBefore(widget.firstDay) ||
         day.isAfter(widget.lastDay) ||
-        !_isDayAvailable(day);
+        !_isDayAvailable(day) ||
+        _isDaysDisable(day, false);
+  }
+
+  bool _isDaysDisable(DateTime day, bool isDayTapped) {
+    return widget.daysDisabled == null
+        ? false
+        : widget.daysDisabled!(day, isDayTapped);
   }
 
   bool _isDayAvailable(DateTime day) {

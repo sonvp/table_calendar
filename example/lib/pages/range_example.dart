@@ -20,6 +20,10 @@ class _TableRangeExampleState extends State<TableRangeExample> {
   DateTime? _rangeStart = DateTime.now().add(Duration(days: 1));
   DateTime? _rangeEnd= DateTime.now().add(Duration(days: 2));
 
+  bool _areSameDay(DateTime one, DateTime two) {
+    return one.day == two.day && one.month == two.month && one.year == two.year;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +31,16 @@ class _TableRangeExampleState extends State<TableRangeExample> {
         title: Text('TableCalendar - Range'),
       ),
       body: TableCalendar(
+        daysDisabled: (day, isDayTapped) {
+          List<DateTime> _daysDisabled = [DateTime(2022, 9, 20),DateTime(2022, 9, 21), DateTime(2022, 9, 23)];
+          for(var value in _daysDisabled) {
+              DateTime _nextDay = _focusedDay.add(Duration(days: 1));
+              if(_areSameDay(value, day) && (isDayTapped || !_areSameDay(_nextDay, value))) {
+                return true;
+              }
+          }
+          return false;
+        },
         isRangeStartEnd: true,
         firstDay: kFirstDay,
         lastDay: kLastDay,
